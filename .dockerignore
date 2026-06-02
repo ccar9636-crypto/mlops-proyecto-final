@@ -1,0 +1,9 @@
+.git
+.github
+.venv
+.generated
+artifacts
+__pycache__
+.pytest_cache
+*.pyc
+
