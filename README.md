@@ -1,6 +1,6 @@
 ---
 title: MLOps Iris ONNX
-emoji: seedling
+emoji: 🌱
 colorFrom: green
 colorTo: blue
 sdk: docker
