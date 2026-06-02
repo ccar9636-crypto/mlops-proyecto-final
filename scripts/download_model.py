@@ -8,6 +8,11 @@ import requests
 def download_file(url: str, output: str) -> None:
     if not url:
         raise ValueError("MODEL_URL esta vacio. Configuralo antes de construir o probar.")
+    if not url.startswith(("http://", "https://")):
+        raise ValueError(
+            "MODEL_URL no parece una URL valida. Debe empezar por https:// y no debe incluir "
+            "el texto MODEL_URL= dentro del valor."
+        )
 
     output_path = Path(output)
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -28,4 +33,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

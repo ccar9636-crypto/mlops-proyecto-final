@@ -1,6 +1,6 @@
 ---
 title: MLOps Iris ONNX
-emoji:
+emoji: seedling
 colorFrom: green
 colorTo: blue
 sdk: docker
@@ -483,23 +483,35 @@ Luego:
 
 1. Haz clic en **Settings**.
 2. Busca la seccion **Variables and secrets**.
-3. Agrega estas variables.
+3. Agrega estas variables **una por una**.
 
-Variables normales:
+No pegues todas las variables juntas en una sola caja. Cada fila debe ser una variable distinta.
 
 ```text
-APP_ENV=dev
-MODEL_URL=https://huggingface.co/datasets/tu_usuario/mlops-iris-assets/resolve/main/model/iris_model.onnx
-HF_LOG_REPO_ID=tu_usuario/mlops-iris-assets
+Name: APP_ENV
+Value: dev
 ```
 
-Secret:
+```text
+Name: MODEL_URL
+Value: https://huggingface.co/datasets/tu_usuario/mlops-iris-assets/resolve/main/model/iris_model.onnx
+```
 
 ```text
-HF_TOKEN=tu_token_de_hugging_face
+Name: HF_LOG_REPO_ID
+Value: tu_usuario/mlops-iris-assets
+```
+
+Y agrega este como **Secret**, no como variable publica:
+
+```text
+Name: HF_TOKEN
+Value: tu_token_de_hugging_face
 ```
 
 Si Hugging Face te deja escoger entre **Variable** y **Secret**, usa **Secret** para `HF_TOKEN`.
+
+Si por error creaste una variable llamada `aa` con varias lineas pegadas dentro, borra esa variable. No sirve para este proyecto.
 
 ## Paso 14: configurar variables del Space prod
 
@@ -509,18 +521,28 @@ Entra al Space prod:
 https://huggingface.co/spaces/tu_usuario/mlops-iris-prod
 ```
 
-Agrega estas variables:
+Agrega estas variables **una por una**:
 
 ```text
-APP_ENV=prod
-MODEL_URL=https://huggingface.co/datasets/tu_usuario/mlops-iris-assets/resolve/main/model/iris_model.onnx
-HF_LOG_REPO_ID=tu_usuario/mlops-iris-assets
+Name: APP_ENV
+Value: prod
 ```
 
-Y este secret:
+```text
+Name: MODEL_URL
+Value: https://huggingface.co/datasets/tu_usuario/mlops-iris-assets/resolve/main/model/iris_model.onnx
+```
 
 ```text
-HF_TOKEN=tu_token_de_hugging_face
+Name: HF_LOG_REPO_ID
+Value: tu_usuario/mlops-iris-assets
+```
+
+Y este como **Secret**:
+
+```text
+Name: HF_TOKEN
+Value: tu_token_de_hugging_face
 ```
 
 ## Paso 15: crear el repositorio en GitHub
@@ -626,15 +648,59 @@ Luego:
 2. En el menu izquierdo, haz clic en **Secrets and variables**.
 3. Haz clic en **Actions**.
 4. Haz clic en **New repository secret**.
-5. Crea un secreto por cada fila de esta tabla.
+5. Crea un secreto por cada bloque de esta lista.
+
+No pegues todas las filas dentro de un solo secreto. Cada secreto se crea por separado.
+
+Tampoco pegues `MODEL_URL=` dentro del valor. En GitHub hay dos cajas: **Name** y **Secret**.
+
+Secreto 1:
 
 ```text
-HF_TOKEN=tu_token_de_hugging_face
-HF_USERNAME=tu_usuario_de_hugging_face
-HF_SPACE_DEV=mlops-iris-dev
-HF_SPACE_PROD=mlops-iris-prod
-MODEL_URL=https://huggingface.co/datasets/tu_usuario_huggingface/mlops-iris-assets/resolve/main/model/iris_model.onnx
-TEST_DATA_URL=https://huggingface.co/datasets/tu_usuario_huggingface/mlops-iris-assets/resolve/main/test/test_data.csv
+Name: HF_TOKEN
+Secret: tu_token_de_hugging_face
+```
+
+Secreto 2:
+
+```text
+Name: HF_USERNAME
+Secret: tu_usuario_de_hugging_face
+```
+
+Este debe ser tu usuario de **Hugging Face**, no tu usuario de GitHub. En tu caso, si tu Dataset es `ccar9636/mlops-iris-assets`, entonces:
+
+```text
+Name: HF_USERNAME
+Secret: ccar9636
+```
+
+Secreto 3:
+
+```text
+Name: HF_SPACE_DEV
+Secret: mlops-iris-dev
+```
+
+Secreto 4:
+
+```text
+Name: HF_SPACE_PROD
+Secret: mlops-iris-prod
+```
+
+Secreto 5:
+
+```text
+Name: MODEL_URL
+Secret: https://huggingface.co/datasets/tu_usuario_huggingface/mlops-iris-assets/resolve/main/model/iris_model.onnx
+```
+
+Secreto 6:
+
+```text
+Name: TEST_DATA_URL
+Secret: https://huggingface.co/datasets/tu_usuario_huggingface/mlops-iris-assets/resolve/main/test/test_data.csv
 ```
 
 Ejemplo de `HF_USERNAME`:
@@ -648,6 +714,21 @@ Ejemplo de `MODEL_URL`:
 ```text
 https://huggingface.co/datasets/juanperez/mlops-iris-assets/resolve/main/model/iris_model.onnx
 ```
+
+Si GitHub Actions falla en `Promote to Hugging Face Space` con:
+
+```text
+Authentication failed
+```
+
+revisa estas 4 cosas:
+
+1. `HF_TOKEN` debe ser un token de **Hugging Face**, no de GitHub.
+2. El token debe tener permiso de escritura. Si es un token fine-grained, debe tener acceso de escritura al Space `mlops-iris-dev` y/o `mlops-iris-prod`.
+3. `HF_USERNAME` debe ser tu usuario de Hugging Face. Para este proyecto parece ser `ccar9636`.
+4. `HF_SPACE_DEV` debe ser solo `mlops-iris-dev`, no la URL completa. `HF_SPACE_PROD` debe ser solo `mlops-iris-prod`.
+
+Despues de corregir secretos, vuelve a **Actions** y usa **Re-run jobs**.
 
 ## Paso 18: ejecutar el pipeline
 

@@ -40,6 +40,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Build Docker image
         run: docker build --build-arg MODEL_URL="${{ secrets.MODEL_URL }}" -t mlops-iris:${{ github.ref_name }} .
@@ -53,6 +55,17 @@ jobs:
             echo "space=${{ secrets.HF_SPACE_DEV }}" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Validate Hugging Face deployment secrets
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USERNAME: ${{ secrets.HF_USERNAME }}
+          HF_SPACE: ${{ steps.choose-space.outputs.space }}
+        run: |
+          test -n "$HF_TOKEN" || (echo "Falta el secreto HF_TOKEN" && exit 1)
+          test -n "$HF_USERNAME" || (echo "Falta el secreto HF_USERNAME" && exit 1)
+          test -n "$HF_SPACE" || (echo "Falta el secreto HF_SPACE_DEV o HF_SPACE_PROD" && exit 1)
+          echo "Deploy target: $HF_USERNAME/$HF_SPACE"
+
       - name: Promote to Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
@@ -63,4 +76,3 @@ jobs:
           git config --global user.name "github-actions"
           git remote add space "https://$HF_USERNAME:$HF_TOKEN@huggingface.co/spaces/$HF_USERNAME/$HF_SPACE"
           git push --force space HEAD:main
-
