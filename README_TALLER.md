@@ -2,9 +2,9 @@
 
 ## 1. Resumen del proyecto
 
-Este repositorio propone una solucion MLOps sencilla para automatizar el despliegue de nuevas versiones de un modelo de machine learning en formato ONNX. La solucion utiliza un modelo clasificador de flores Iris y expone una API REST para que usuarios finales puedan enviar datos de entrada y recibir una prediccion.
+En este repositorio presentamos una solucion MLOps sencilla para automatizar el despliegue de nuevas versiones de un modelo de machine learning en formato ONNX. Nuestra solucion utiliza un modelo clasificador de flores Iris y expone una API REST para que usuarios finales puedan enviar datos de entrada y recibir una prediccion.
 
-El sistema fue disenado para cumplir los requisitos del taller:
+Disenamos el sistema para cumplir los requisitos del taller:
 
 - Repositorio en GitHub.
 - Pipeline CI/CD con GitHub Actions.
@@ -18,7 +18,7 @@ El sistema fue disenado para cumplir los requisitos del taller:
 
 ## 2. Aplicacion seleccionada
 
-La aplicacion implementada es una API de prediccion para el conjunto de datos Iris. A partir de cuatro variables numericas de una flor:
+La aplicacion que implementamos es una API de prediccion para el conjunto de datos Iris. A partir de cuatro variables numericas de una flor:
 
 - Longitud del sepalo.
 - Ancho del sepalo.
@@ -31,11 +31,11 @@ El modelo predice una de las siguientes clases:
 - `versicolor`
 - `virginica`
 
-La API fue desarrollada con FastAPI y utiliza ONNX Runtime para ejecutar el modelo.
+Desarrollamos la API con FastAPI y utilizamos ONNX Runtime para ejecutar el modelo.
 
 ## 3. Proveedor de nube seleccionado
 
-Para el despliegue se eligio **Hugging Face** porque permite crear Spaces con Docker sin costo para una demostracion academica. Esta alternativa evita incurrir en gastos y es suficiente para sustentar el funcionamiento del sistema ante el docente.
+Para el despliegue seleccionamos **Hugging Face** porque permite crear Spaces con Docker sin costo para una demostracion academica. Esta alternativa nos permite evitar gastos y es suficiente para sustentar el funcionamiento del sistema ante el docente.
 
 Se utilizan dos componentes de Hugging Face:
 
@@ -320,7 +320,7 @@ La solucion fue validada con los siguientes resultados:
 
 ## 15. Como sustentar la solucion
 
-Para la sustentacion se recomienda mostrar:
+Para la sustentacion recomendamos mostrar:
 
 1. Repositorio de GitHub con las ramas `dev` y `prod`.
 2. Archivo `.github/workflows/mlops.yml`.
@@ -332,7 +332,6 @@ Para la sustentacion se recomienda mostrar:
 
 ## 16. Conclusiones
 
-La solucion implementada demuestra un flujo MLOps basico pero funcional. El sistema permite probar automaticamente un modelo ONNX, construir una aplicacion contenedorizada y desplegarla automaticamente en dos ambientes separados.
+La solucion que implementamos demuestra un flujo MLOps basico pero funcional. El sistema permite probar automaticamente un modelo ONNX, construir una aplicacion contenedorizada y desplegarla automaticamente en dos ambientes separados.
 
 Ademas, la arquitectura evita almacenar el modelo y los datos de prueba dentro del repositorio, y registra las predicciones en archivos externos para posibles analisis futuros. Todo el despliegue se realiza con servicios gratuitos adecuados para una demostracion academica.
-
