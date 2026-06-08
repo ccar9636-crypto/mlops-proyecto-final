@@ -304,9 +304,11 @@ HF_SPACE_DEV
 HF_SPACE_PROD
 MODEL_URL
 TEST_DATA_URL
+DOCKERHUB_USERNAME
+DOCKERHUB_TOKEN
 ```
 
-Estos secretos permiten descargar activos, construir la imagen Docker y desplegar automaticamente en Hugging Face Spaces.
+`HF_TOKEN`, `HF_USERNAME`, `HF_SPACE_DEV` y `HF_SPACE_PROD` permiten configurar el ambiente y desplegar en Hugging Face Spaces. `MODEL_URL` y `TEST_DATA_URL` permiten descargar activos externos durante el pipeline. `DOCKERHUB_USERNAME` y `DOCKERHUB_TOKEN` permiten publicar la imagen Docker en DockerHub como parte de la etapa build/promote.
 
 ## 14. Evidencia de funcionamiento
 
